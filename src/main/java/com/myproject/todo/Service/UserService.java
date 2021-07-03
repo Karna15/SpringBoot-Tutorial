@@ -3,6 +3,7 @@ package com.myproject.todo.Service;
 import java.util.List;
 
 import com.myproject.todo.Entity.User;
+import com.myproject.todo.Exception.NoUserFound;
 import com.myproject.todo.Repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,17 @@ public class UserService {
     }
 
     public User updateUser (User user) {
-        User user1 = userrepository.findById(user.getUser_id()).orElse(null);
-        user1.setFirst_name(user.getFirst_name());
-        user1.setLast_name(user.getLast_name());
-        return userrepository.save(user1);
+    	if(userrepository.findById(user.getUser_id()).isPresent())
+    	{
+	        User user1 = userrepository.findById(user.getUser_id()).orElse(null);
+	        user1.setFirst_name(user.getFirst_name());
+	        user1.setLast_name(user.getLast_name());
+	        return userrepository.save(user1);
+    	}
+    	else
+    	{
+    		throw new NoUserFound("No User for ID: "+user.getUser_id());
+    	}
     }
 
 }
