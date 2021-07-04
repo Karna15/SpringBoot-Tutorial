@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    
+
     @Autowired
     UserRepository userrepository;
 
-    public List<User> getAllUser(){
+    public List<User> getAllUser() {
         return userrepository.findAll();
     }
 
@@ -25,21 +25,18 @@ public class UserService {
 
     public String deleteUser(long user_id) {
         userrepository.deleteById(user_id);
-        return user_id + " Deleted";
+        return "Deleted User id :" + user_id ;
     }
 
-    public User updateUser (User user) {
-    	if(userrepository.findById(user.getUser_id()).isPresent())
-    	{
-	        User user1 = userrepository.findById(user.getUser_id()).orElse(null);
-	        user1.setFirst_name(user.getFirst_name());
-	        user1.setLast_name(user.getLast_name());
-	        return userrepository.save(user1);
-    	}
-    	else
-    	{
-    		throw new NoUserFound("No User for ID: "+user.getUser_id());
-    	}
+    public User updateUser(User user) {
+        if (userrepository.findById(user.getUser_id()).isPresent()) {
+            User user1 = userrepository.findById(user.getUser_id()).orElse(null);
+            user1.setFirst_name(user.getFirst_name());
+            user1.setLast_name(user.getLast_name());
+            return userrepository.save(user1);
+        } else {
+            throw new NoUserFound("No User for ID: " + user.getUser_id());
+        }
     }
 
 }
